@@ -65,16 +65,15 @@ def getSentenceMatrix(sentence):
     return sentenceMatrix
 
 
-inputText = '''Nine minutes of psychedelic, pulsating, often symmetric abstract images,
-are enough to drive anyone crazy. I did spot a full-frame eye at the start,
-and later some birds silhouetted against other colors. It was just not my cup of tea.
-It's about 8 minutes too long.'''
+inputText = '''New #macOS malware found exploiting the latest GateKeeper bypass vulnerability that was disclosed publicly last month after #Apple left it unpatched for 90 days'''
 
 inputMatrix = getSentenceMatrix(inputText)
 
 
 
 predictedSentiment = sess.run(prediction, {input_data: inputMatrix})[0]
+
+print(predictedSentiment)
 
 
 if (predictedSentiment[0] > predictedSentiment[1]):

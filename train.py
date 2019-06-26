@@ -1,26 +1,26 @@
 import numpy as np
-wordsList = np.load('wordsList.npy')
-print('Loaded the word list!')
-wordsList = wordsList.tolist()
-wordsList = [word.decode('UTF-8') for word in wordsList]
+
+#word vector has a sense about the contexts
 wordVectors = np.load('wordVectors.npy')
-print ('Loaded the word vectors!')
 
+#loard the vectorized prepared dataset (from preprocess.py)
+ids = np.load('idsMatrix2.npy')
 
-import tensorflow as tf
+maxSeqLength = 750 #number of words in an training data entry
 
-
-maxSeqLength = 750
 numDimensions = 300
 
-ids = np.load('idsMatrix2.npy')
+batchSize = 24 # number of samples that will be taken at a time to train the model. Then it require less memory
+lstmUnits = 64 # number of LSTM cells.  each LSTM cell conssit of 4 gates by design
+numClasses = 2
+iterations = 100000 #number of iterations in nural network training (each iteration contain one foward and backward iteration)
 
 
 from random import randint
 
 def getTrainBatch():
     labels = []
-    arr = np.zeros([batchSize, maxSeqLength])
+    arr = np.zeros([batchSize, maxSeqLength]) #get zero filled array with the size of batchSize
     for i in range(batchSize):
         if (i % 2 == 0):
             num = randint(1,979)
@@ -46,10 +46,6 @@ def getTestBatch():
 
 
 
-batchSize = 24
-lstmUnits = 64
-numClasses = 2
-iterations = 100000
 
 
 
@@ -102,11 +98,8 @@ with tf.Session() as sess:
     writer = tf.summary.FileWriter(logdir, sess.graph)
 
 
-
-
-
-# uncomment to train
-'''
+#--------------------------------TRAINING ----------------------
+''' 
 sess = tf.InteractiveSession()
 saver = tf.train.Saver()
 sess.run(tf.global_variables_initializer())
@@ -114,7 +107,8 @@ sess.run(tf.global_variables_initializer())
 for i in range(iterations):
    #Next Batch of reviews
     nextBatch, nextBatchLabels = getTrainBatch();
-    sess.run(optimizer, {input_data: nextBatch, labels: nextBatchLabels}); print(i);
+    sess.run(optimizer, {input_data: nextBatch, labels: nextBatchLabels});
+    print(i);
 
     #Write summary to Tensorboard
     if (i % 50 == 0):
@@ -137,7 +131,7 @@ saver = tf.train.Saver()
 saver = tf.train.import_meta_graph('models/pretrained_lstm.ckpt-60000.meta')
 saver.restore(sess,tf.train.latest_checkpoint('models'))
 
-# https://stackoverflow.com/questions/33759623/tensorflow-how-to-save-restore-a-model
+# Read the stored model
 graph = tf.get_default_graph()
 print([op.name for op in graph.get_operations()])
 
