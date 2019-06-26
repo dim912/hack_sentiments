@@ -99,3 +99,41 @@ if (predictedSentiment[0] > predictedSentiment[1]):
     print("Positive Sentiment")
 else:
     print("Negative Sentiment")
+
+
+# ------------------------------------ RESTFUL API ----------------------------
+
+import json
+from flask import Flask, jsonify, request,Response
+from flask_restful import reqparse, abort, Api, Resource
+
+app = Flask(__name__)
+api = Api(app)
+
+class Predictor(Resource):
+    def post(self):
+        json_data = request.get_json(force=True)
+
+        result = []
+        for tweetData in json_data:
+            tweet = tweetData['tweet']
+            date = tweetData['date']
+
+            tweetMatrix = getSentenceMatrix(tweet)
+            tweetSentiment = sess.run(prediction, {input_data: tweetMatrix})[0]
+            if (tweetSentiment[0] > tweetSentiment[1]):
+                sentiment = 1;
+            else:
+                sentiment = 0;
+            res = {"date":date, "sentiment":sentiment}
+            result.append(res)
+
+        return Response(json.dumps(result),  mimetype='application/json')
+
+api.add_resource(Predictor, '/predict')
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5444 ,debug=True)
+
+
+
