@@ -1,0 +1,17 @@
+ * Serving Flask app "vader" (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: on
+ * Running on http://0.0.0.0:5446/ (Press CTRL+C to quit)
+ * Restarting with stat
+ * Serving Flask app "vader" (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: on
+ * Running on http://0.0.0.0:5446/ (Press CTRL+C to quit)
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 276-997-911
+199.253.242.22 - - [27/Jun/2019 05:35:39] "[37mPOST /predict/vader HTTP/1.1[0m" 200 -
