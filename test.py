@@ -125,12 +125,12 @@ class Predictor(Resource):
                 sentiment = 1;
             else:
                 sentiment = 0;
-            res = {"date":date, "sentiment":sentiment}
+            res = {"date":date, "tweet":tweet, "sentiment":sentiment}
             result.append(res)
 
         return Response(json.dumps(result),  mimetype='application/json')
 
-api.add_resource(Predictor, '/predict')
+api.add_resource(Predictor, '/predict/tf')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5444 ,debug=True)
