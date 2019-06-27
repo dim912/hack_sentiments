@@ -110,7 +110,18 @@ from flask_restful import reqparse, abort, Api, Resource
 app = Flask(__name__)
 api = Api(app)
 
+
+
+from flask_cors import CORS, cross_origin
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
+
+
+
+
 class Predictor(Resource):
+   
+    @cross_origin()
     def post(self):
         json_data = request.get_json(force=True)
 
